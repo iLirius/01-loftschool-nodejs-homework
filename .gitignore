@@ -1,0 +1,8 @@
+syntax: glob
+from/
+to/
+
+syntax: regexp
+.vscode/*
+node_modules/
+
