@@ -30,7 +30,7 @@ process.on('exit', code => {
   default:
     if (program.rm) {
       deleteFolderRecursive(sourceDir);
-      console.log('\nИсходня директория удалена');
+      console.log('\nИсходная директория удалена');
 
     }
     break;
