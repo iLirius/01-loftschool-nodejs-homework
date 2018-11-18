@@ -19,13 +19,10 @@ program
   .option('-r, --rm [status]', 'Удалить исходную директорию', false)
   .parse(process.argv);
 
-var sourceDir = path.resolve(dir, path.normalize(program.sourceDir));
-var destDir = path.resolve(dir, path.normalize(program.destinationDir));
-
 process.on('exit', code => {
   switch (code) {
   case 404:
-    logs.error('Нет такого файла или директории:', sourceDir);
+    logs.error('Нет такого файла или директории:', path.resolve(program.sourceDir));
     break;
   default:
     if (program.rm) {
@@ -48,6 +45,9 @@ if (program.sourceDir === '-d' || !program.sourceDir || !program.destinationDir)
   }
 }
 
+var sourceDir = path.resolve(dir, path.normalize(program.sourceDir));
+var destDir = path.resolve(dir, path.normalize(program.destinationDir));
+
 if (!fs.existsSync(sourceDir)) {
   process.exit(404);
 }
@@ -55,5 +55,4 @@ if (!fs.existsSync(sourceDir)) {
 if (!fs.existsSync(program.destinationDir)) {
   fs.mkdirSync(destDir);
 }
-
 readDir(sourceDir, destDir);
