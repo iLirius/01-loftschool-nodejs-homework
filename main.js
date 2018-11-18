@@ -6,38 +6,50 @@ const program = require('commander');
 // const argv = require("minimist")(process.argv.slice(2));
 
 // Developers requires
-const readDir = require('./src/readDir');
+const readDir = require('./src/files/readDir');
+const deleteFolderRecursive = require('./src/files/deleteDir');
 const logs = require('./src/logs');
 
 var dir = process.cwd();
 
 program
   .version('1.0.0')
-  .option('-s, --source-dir <path>', 'Директория которую надо обработать')
-  .option('-d, --destination-dir <path>', 'Директория результат работы парсинга')
+  .option('-s, --source-dir <path>', 'Директория которую надо отсортировать')
+  .option('-d, --destination-dir <path>', 'Директория результат работы парсинга', './output')
+  .option('-r, --rm [status]', 'Удалить исходную директорию', false)
   .parse(process.argv);
-
-// Проверяем была ли введена директория для парсинга
-if (program.fromDir === '-d' || !program.destinationDir) {
-  console.info('\nНе был предан обязательный парамер: ');
-
-  if (!program.fromDir) {
-    logs.error('Параметр -s, --source-dir:', 'пуст');
-  }
-
-  if (!program.destinationDir) {
-    logs.error('Параметр -d, --destination-dir:', 'пуст');
-  }
-  program.help();
-  return -1;
-}
 
 var sourceDir = path.resolve(dir, path.normalize(program.sourceDir));
 var destDir = path.resolve(dir, path.normalize(program.destinationDir));
 
+process.on('exit', code => {
+  switch (code) {
+  case 404:
+    logs.error('Нет такого файла или директории:', sourceDir);
+    break;
+  default:
+    if (program.rm) {
+      deleteFolderRecursive(sourceDir);
+      console.log('\nИсходня директория удалена');
+
+    }
+    break;
+  }
+});
+
+// Проверяем была ли введена директория для парсинга
+if (program.sourceDir === '-d' || !program.sourceDir || !program.destinationDir) {
+  console.info('Не был предан обязательный парамер: ');
+
+  if (!program.sourceDir) {
+    logs.error('Параметр -s, --source-dir:', 'пуст');
+    program.help();
+    process.exit(500);
+  }
+}
+
 if (!fs.existsSync(sourceDir)) {
-  logs.error('Нет такого файла или директории:', sourceDir);
-  return;
+  process.exit(404);
 }
 
 if (!fs.existsSync(program.destinationDir)) {

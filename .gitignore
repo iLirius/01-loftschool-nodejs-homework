@@ -1,9 +1,10 @@
 syntax: glob
+output/
 from/
-to/
 
 syntax: regexp
 .vscode/*
 node_modules/
+
 
 TMP
