@@ -1,5 +1,5 @@
-const colors = require("colors");
+const colors = require('colors');
 
 module.exports.error = (message, text) => {
-  console.log(message, colors.red(text), "\n");
+  console.log(message, colors.red(text), '\n');
 };
