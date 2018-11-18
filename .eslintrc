@@ -4,7 +4,7 @@
         "commonjs": true,
         "es6": true
     },
-    "extends": ["standard", "eslint:recommended", "prettier", "plugin:prettier/recommended"],
+    "extends": ["standard", "eslint:recommended", "prettier", "prettier/standard"],
     "parserOptions": {
         "sourceType": "module"
     },
