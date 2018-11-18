@@ -40,7 +40,7 @@ const readWrite = (sourceDir, destDir, file) => {
  * Ф-я синхронного рекурсивного чтения директории
  * @param {string} source
  * @param {string} dest
- * @returns {void}
+ * @returns {void} void
  */
 const readDir = (source, dest) => {
   let files = fs.readdirSync(source);
